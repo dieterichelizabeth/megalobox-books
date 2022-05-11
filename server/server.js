@@ -2,7 +2,6 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
-
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
@@ -57,7 +56,7 @@ if (process.env.NODE_ENV === "production") {
 todo:
 Done- Implement the Apollo Server and apply it to the Express server as middleware
 Done- Import the Apollo Server
-- Import Authentication middleware (auth.js)
+Done - Import Authentication middleware (auth.js)
 Done- Import typeDefs and resolvers
 Done- Create a new Apollo server and pass in schemas 
 Done- Create a new instance of Apollo server (using an async function)

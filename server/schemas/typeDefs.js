@@ -8,6 +8,16 @@ const typeDefs = gql`
     username: String
     email: String
     bookCount: Int
+    savedBooks: [Book]
+  }
+
+  type Book {
+    bookId: ID
+    authors: []
+    description: String
+    title: String
+    image: String
+    link: String
   }
 
   type Auth {
@@ -38,10 +48,10 @@ documentation-
 - Mutation type allows clients to modify data
 
 todo-
-- define the User type
-- define the Book type
-- define the Auth type
-- Query type for "me" to return a user
-- Mutation type for login, adding a new user, and saving a book
-- Removing a book to return a user
+Done - define the User type
+Done - define the Book type
+Done - define the Auth type
+Done - Query type for "me" to return a user
+Done - Mutation type for login, adding a new user,
+- Mutation type for saving a book, removing a book to return a user
  */

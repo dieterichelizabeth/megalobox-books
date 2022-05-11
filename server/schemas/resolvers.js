@@ -58,6 +58,6 @@ documentation-
 - fieldName: (parent, args, context, info) => data; (Resolvers can accept 4 arguments)
 
 todo-
-- Define the Query resolvers for fields "me", "user", "book" (get)
+Done - Define the Query resolvers for fields "me" (get)
 - Define the Mutation resolver for fields "login", "addUser", "add book", "remove book" (post, put, delete)
  */
