@@ -2,19 +2,26 @@
 const { User } = require("../models");
 // Relay Mongoose (User) errors to the client
 const { AuthenticationError } = require("apollo-server-express");
+// Import signToken from auth.js
+const { signToken } = require("../utils/auth");
 
 // Queries and Mutations for Mongoose models
 const resolvers = {
   Query: {
+    // Get one user
     me: async (parent, args) => {
       return User.findOne(args);
     },
   },
   Mutation: {
+    // Add a new user - uses JWT Authentication
     addUser: async (parent, args) => {
       const user = await User.create(args);
-      return user;
+      const token = signToken(user);
+
+      return { token, user };
     },
+    // Login - uses JWT Authentication
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -28,7 +35,8 @@ const resolvers = {
         throw new AuthenticationError("Invalid Password.");
       }
 
-      return user;
+      const token = signToken(user);
+      return { token, user };
     },
   },
 };
