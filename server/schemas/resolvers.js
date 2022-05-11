@@ -7,6 +7,9 @@ const resolvers = {
     testRun: () => {
       return "tada!!";
     },
+    user: () => {
+      return "This is a user";
+    },
   },
 };
 

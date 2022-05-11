@@ -1,10 +1,7 @@
-// Import Express
+// Import Express, Apollo Server, Schema, and DB connection
 const express = require("express");
-// Import Apollo Server
 const { ApolloServer } = require("apollo-server-express");
-// Import the Schema
 const { typeDefs, resolvers } = require("./schemas");
-// Import the database connection
 const db = require("./config/connection");
 
 // Set the port
@@ -16,9 +13,8 @@ const server = new ApolloServer({
   resolvers,
 });
 
-// Define app
 const app = express();
-// Middleware
+// Express Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -40,7 +36,7 @@ const megaloboxApolloServer = async (typeDefs, resolvers) => {
   });
 };
 
-// Call the async
+// Call the async Function to start Apollo Server
 megaloboxApolloServer(typeDefs, resolvers);
 
 /*
