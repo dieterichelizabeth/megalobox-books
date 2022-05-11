@@ -4,11 +4,14 @@ const { User } = require("../models");
 // Queries and Mutations for Mongoose models
 const resolvers = {
   Query: {
-    testRun: () => {
-      return "tada!!";
+    me: async (parent, args) => {
+      return User.findOne(args);
     },
-    user: () => {
-      return "This is a user";
+  },
+  Mutation: {
+    addUser: async (parent, args) => {
+      const user = await User.create(args);
+      return user;
     },
   },
 };

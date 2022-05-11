@@ -11,8 +11,11 @@ const typeDefs = gql`
   }
 
   type Query {
-    testRun: String
-    user: User
+    me: User
+  }
+
+  type Mutation {
+    addUser(username: String!, email: String!, password: String!): User
   }
 `;
 
