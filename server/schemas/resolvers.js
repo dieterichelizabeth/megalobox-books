@@ -1,5 +1,7 @@
 // Import models
 const { User } = require("../models");
+// Relay Mongoose (User) errors to the client
+const { AuthenticationError } = require("apollo-server-express");
 
 // Queries and Mutations for Mongoose models
 const resolvers = {
@@ -11,6 +13,21 @@ const resolvers = {
   Mutation: {
     addUser: async (parent, args) => {
       const user = await User.create(args);
+      return user;
+    },
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        throw new AuthenticationError("Invalid Email.");
+      }
+
+      const validPassword = await user.isCorrectPassword(password);
+
+      if (!validPassword) {
+        throw new AuthenticationError("Invalid Password.");
+      }
+
       return user;
     },
   },
