@@ -1,7 +1,14 @@
 // Import models
+const { User } = require("../models");
 
 // Queries and Mutations for Mongoose models
-const resolvers = {};
+const resolvers = {
+  Query: {
+    testRun: () => {
+      return "tada!!";
+    },
+  },
+};
 
 // Export
 module.exports = resolvers;
