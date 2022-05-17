@@ -121,5 +121,7 @@ export default SavedBooks;
 
 /*
 Todo
-- Use Apollo useMutation Hook to execute SAVE_BOOK mutation in handleSaveBook() function instead of the saveBook() function from API
+- Remove useEffect hook that sets the state for UserData
+- Add useQuery Hook to execute the GET_ME query on load and save to a variable named userData
+- Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook() function
 */
