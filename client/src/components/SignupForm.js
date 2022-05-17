@@ -133,8 +133,3 @@ const SignupForm = () => {
 };
 
 export default SignupForm;
-
-/*
-Todo
-- Replace addUser() with ADD_USER mutation
-*/
