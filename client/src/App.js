@@ -6,6 +6,7 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import SearchBooks from "./pages/SearchBooks";
 import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
@@ -13,6 +14,17 @@ import Navbar from "./components/Navbar";
 // Establish a new link to the GraphQL server
 const httpLink = createHttpLink({
   uri: "/graphql",
+});
+
+// Middleware function that will retrieve the token for us
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("id_token");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
 });
 
 // Instantiate the Apollo Client instance and create the connection to the API endpoint

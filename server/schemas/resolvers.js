@@ -44,20 +44,40 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    // Save a book to user's saved books
+    saveBook: async (parent, args, context) => {
+      if (context.user) {
+        const newBook = await Book.create({
+          ...args,
+          username: context.user.username,
+        });
+
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $push: { savedBooks: bookId } },
+          { new: true }
+        ).populate("savedBooks");
+
+        return updatedUser;
+      }
+
+      throw new AuthenticationError("You need to be logged in!");
+    },
+    // Remove a book to user's saved books
+    removeBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndDelete(
+          { _id: context.user._id },
+          { $pull: { savedBooks: bookId } }
+        ).populate("savedBooks");
+
+        return updatedUser;
+      }
+
+      throw new AuthenticationError("You need to be logged in!");
+    },
   },
 };
 
 // Export
 module.exports = resolvers;
-
-/*
-Notes:
-documentation-
-- "A resolver is a function that's responsible for populating the data for a single field in your schema".
-- resolvers return either the data of the type required by the schema OR a promise that fulfills with data of the required type
-- fieldName: (parent, args, context, info) => data; (Resolvers can accept 4 arguments)
-
-todo-
-Done - Define the Query resolvers for fields "me" (get)
-- Define the Mutation resolver for fields "login", "addUser", "add book", "remove book" (post, put, delete)
- */

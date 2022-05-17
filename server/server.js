@@ -1,7 +1,8 @@
-// Import Express, Apollo Server, Schema, and DB connection
+// Import Express, Apollo Server, Schema, DB connection and Path Module
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
+const path = require("path");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
@@ -16,9 +17,20 @@ const server = new ApolloServer({
 });
 
 const app = express();
+
 // Express Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Serve up static assets
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+}
+
+// if we're in production, serve client/build as static assets
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 // Instance of Apollo Server
 const megaloboxApolloServer = async (typeDefs, resolvers) => {
@@ -40,27 +52,3 @@ const megaloboxApolloServer = async (typeDefs, resolvers) => {
 
 // Call the async Function to start Apollo Server
 megaloboxApolloServer(typeDefs, resolvers);
-
-/*
-Transition server to use Apollo with GraphQL schema from REST API
-
-Rest API code:
-const routes = require("./routes");
-const path = require("path");
-app.use(routes);
-if we're in production, serve client/build as static assets
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build")));
-}
-
-todo:
-Done- Implement the Apollo Server and apply it to the Express server as middleware
-Done- Import the Apollo Server
-Done - Import Authentication middleware (auth.js)
-Done- Import typeDefs and resolvers
-Done- Create a new Apollo server and pass in schemas 
-Done- Create a new instance of Apollo server (using an async function)
-  - Integrate Apollo server with Express application as middleware
-  - Add console.log of GraphQl Studio Explorer for testing
-Done- Call an async function to start the server
-*/

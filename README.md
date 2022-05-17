@@ -41,3 +41,11 @@ THEN that book is deleted from my saved books list
 WHEN I click on the Logout button
 THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button
 ```
+
+## Documentation/Resources
+
+- [jwt.io](https://jwt.io/)
+- [Apollo Resolvers](https://www.apollographql.com/docs/apollo-server/data/resolvers/)
+- [Input Types](https://www.apollographql.com/docs/apollo-server/schema/schema/#input-types)
+- [GraphQL Schemas](https://graphql.org/learn/schema/)
+- [Input Types Apollo Blog](https://www.apollographql.com/blog/graphql/basics/input-types-and-client-caching/)

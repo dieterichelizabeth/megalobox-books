@@ -13,11 +13,15 @@ const typeDefs = gql`
 
   type Book {
     bookId: ID
-    authors: []
+    authors: String
     description: String
     title: String
     image: String
     link: String
+  }
+
+  type Query {
+    me: User
   }
 
   type Auth {
@@ -25,33 +29,20 @@ const typeDefs = gql`
     user: User
   }
 
-  type Query {
-    me: User
-  }
-
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
+    saveBook(
+      bookId: ID!
+      authors: String!
+      description: String!
+      title: String!
+      image: String!
+      link: String!
+    ): User
+    removeBook(bookId: ID!): User
   }
 `;
 
 // Export
 module.exports = typeDefs;
-
-/*
-Notes:
-documentation-
-- schema's structure to support the client actions
-- between the backticks are SDL: schema definition language
-- definitions in a GraphQL schema are object types. 
-- Query type allows the client to fetch objects defined in the typeDefs
-- Mutation type allows clients to modify data
-
-todo-
-Done - define the User type
-Done - define the Book type
-Done - define the Auth type
-Done - Query type for "me" to return a user
-Done - Mutation type for login, adding a new user,
-- Mutation type for saving a book, removing a book to return a user
- */
