@@ -5,25 +5,28 @@ import { ADD_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 const SignupForm = () => {
-  // set initial form state
+  // Form State
   const [userFormData, setUserFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
 
-  const [addUser] = useMutation(ADD_USER);
+  // Use mutation from auth.js
+  const [addUser, { error }] = useMutation(ADD_USER);
 
-  // set state for form validation
+  // Set State for Form Validation
   const [validated] = useState(false);
-  // set state for alert
+  // Set state for Alert
   const [showAlert, setShowAlert] = useState(false);
 
+  // Update State based on user input to Form
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
+  // On submit of Signup Form, attempt to add the user
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -34,16 +37,17 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
+    // use try/catch to use database mutation
+    // use Auth to assign new token and set to "logged-in"
     try {
-      const response = await addUser(userFormData);
+      console.log(userFormData);
+      const { data } = await addUser({
+        variables: { ...userFormData },
+      });
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      // const { token, user } = await response.json();
+      console.log(data);
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);

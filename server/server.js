@@ -1,9 +1,9 @@
 // Import Express, Apollo Server, Schema, DB connection and Path Module
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-const { authMiddleware } = require("./utils/auth");
 const path = require("path");
 const { typeDefs, resolvers } = require("./schemas");
+const { authMiddleware } = require("./utils/auth");
 const db = require("./config/connection");
 
 // Set the port
