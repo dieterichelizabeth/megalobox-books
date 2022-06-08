@@ -8,11 +8,15 @@ const { signToken } = require("../utils/auth");
 // Queries and Mutations for Mongoose models
 const resolvers = {
   Query: {
+    testRun: () => {
+      return "tada!!";
+    },
     // Get one user
     me: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id });
-
+        const userData = await User.findOne({ _id: context.user._id }).populate(
+          "savedBooks"
+        );
         return userData;
       }
 
@@ -20,13 +24,6 @@ const resolvers = {
     },
   },
   Mutation: {
-    // Add a new user - uses JWT Authentication
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
-
-      return { token, user };
-    },
     // Login - uses JWT Authentication
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
@@ -44,19 +41,21 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    // Add a new user - uses JWT Authentication
+    addUser: async (parent, args) => {
+      const user = await User.create(args);
+      const token = signToken(user);
+
+      return { token, user };
+    },
     // Save a book to user's saved books
     saveBook: async (parent, args, context) => {
       if (context.user) {
-        const newBook = await Book.create({
-          ...args,
-          username: context.user.username,
-        });
-
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $push: { savedBooks: bookId } },
+          { $push: { savedBooks: { ...args } } },
           { new: true }
-        ).populate("savedBooks");
+        );
 
         return updatedUser;
       }
@@ -66,10 +65,11 @@ const resolvers = {
     // Remove a book to user's saved books
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const updatedUser = await User.findOneAndDelete(
+        const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
-          { $pull: { savedBooks: bookId } }
-        ).populate("savedBooks");
+          { $pull: { savedBooks: { bookId } } },
+          { new: true }
+        );
 
         return updatedUser;
       }
@@ -79,5 +79,5 @@ const resolvers = {
   },
 };
 
-// Export
+// Export Resolvers
 module.exports = resolvers;

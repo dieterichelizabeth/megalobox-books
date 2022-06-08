@@ -1,9 +1,10 @@
 // Import Express, Apollo Server, Schema, DB connection and Path Module
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+const { authMiddleware } = require("./utils/auth");
+
 const path = require("path");
 const { typeDefs, resolvers } = require("./schemas");
-const { authMiddleware } = require("./utils/auth");
 const db = require("./config/connection");
 
 // Set the port
@@ -23,14 +24,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Serve up static assets
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build")));
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../client/build")));
+// }
 
 // if we're in production, serve client/build as static assets
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/build/index.html"));
+// });
 
 // Instance of Apollo Server
 const megaloboxApolloServer = async (typeDefs, resolvers) => {
